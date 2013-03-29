@@ -4,6 +4,10 @@ isNumber = (n) =>
 isString = (obj) =>
     Object.prototype.toString.call(obj) == '[object String]';
 
+getCharArrayFromObject = (obj) =>
+    JSON.stringify(obj).split('').slice(1, -1)
+
+
 Token = {
     NAME : {vaue : 1, name : "NAME"},
     NUMBER : {vaue : 2, name : "NUMBER"},
@@ -77,7 +81,7 @@ class Calc
             @getToken()
         switch @currToken
             when Token.NUMBER
-                nmb = parseFloat(@someValue).toFixed(2)
+                nmb = parseFloat(@someValue)
                 @someValue = ''
                 @getToken()
                 return nmb
@@ -104,7 +108,7 @@ class Calc
                     if d != 0.0
                         left /= d
                     else 
-                        showError 'division by 0'
+                        @showError 'division by 0'
                     #//return 0;  
                 else
                     return left
@@ -122,10 +126,9 @@ class Calc
 
     exec : (arg) =>
         if !arg?
-            #@showError "vvedite 1 parametr"
             return
 
-        @charArray = JSON.stringify(arg).split('').slice(1, -1)
+        @charArray = getCharArrayFromObject(arg)
         loop 
             @getToken()
             if @currToken == Token.END 
@@ -137,11 +140,17 @@ runCalc = (textToCalculate) =>
     calc = new Calc
     calc.exec textToCalculate
 
+prepareString = (stringToCalc) =>
+    return stringToCalc.replace(/\,/g,'.')
+
 setup = (sourceSelector, resultSelector) =>
-    source = sourceSelector.val()
+    source = prepareString(sourceSelector.val())
     result = runCalc(source)
-    if typeof result isnt 'undefined' and result != 0
-        resultSelector.text result
+    if result
+        if result.toString().indexOf('.') != -1
+            result = Number(result).toFixed(2)
+        if typeof result isnt 'undefined' and result != 0
+            resultSelector.text result
     true
 
 $ =>
