@@ -77,7 +77,7 @@ class Calc
             @getToken()
         switch @currToken
             when Token.NUMBER
-                nmb = parseFloat @someValue
+                nmb = parseFloat(@someValue).toFixed(2)
                 @someValue = ''
                 @getToken()
                 return nmb

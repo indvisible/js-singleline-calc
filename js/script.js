@@ -158,7 +158,7 @@
       }
       switch (this.currToken) {
         case Token.NUMBER:
-          nmb = parseFloat(this.someValue);
+          nmb = parseFloat(this.someValue).toFixed(2);
           this.someValue = '';
           this.getToken();
           return nmb;
