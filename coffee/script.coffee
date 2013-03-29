@@ -19,8 +19,6 @@ Token = {
     ZERO : {vaue : 12, name : "ZERO"}
 }
 
-
-
 class Calc
     constructor: () ->
         @currToken = Token.PRINT
@@ -135,18 +133,21 @@ class Calc
             else
                 return @expr(false)
 
-
 runCalc = (textToCalculate) =>
     calc = new Calc
     calc.exec textToCalculate
 
-setup = () =>
-    source = $('#source').val()
+setup = (sourceSelector, resultSelector) =>
+    source = sourceSelector.val()
     result = runCalc(source)
-    if typeof result isnt 'undefined'
-        $('#result').text result
+    if typeof result isnt 'undefined' and result != 0
+        resultSelector.text result
     true
-setInterval(() => 
-    setup() 
-    true
-500)
+
+$ =>
+    sourceSelector = $('#source')
+    resultSelector = $('#result')
+    setInterval(() => 
+        setup(sourceSelector, resultSelector)
+        true
+    100)

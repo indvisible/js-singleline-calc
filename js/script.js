@@ -246,20 +246,26 @@
     return calc.exec(textToCalculate);
   };
 
-  setup = function() {
+  setup = function(sourceSelector, resultSelector) {
     var result, source;
 
-    source = $('#source').val();
+    source = sourceSelector.val();
     result = runCalc(source);
-    if (typeof result !== 'undefined') {
-      $('#result').text(result);
+    if (typeof result !== 'undefined' && result !== 0) {
+      resultSelector.text(result);
     }
     return true;
   };
 
-  setInterval(function() {
-    setup();
-    return true;
-  }, 500);
+  $(function() {
+    var resultSelector, sourceSelector;
+
+    sourceSelector = $('#source');
+    resultSelector = $('#result');
+    return setInterval(function() {
+      setup(sourceSelector, resultSelector);
+      return true;
+    }, 100);
+  });
 
 }).call(this);
