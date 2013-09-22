@@ -131,19 +131,18 @@ Calc.prototype.prim = function(get) {
     case Token.LP:
       var e = this.expr(true);
       if (this.currToken !== Token.RP) {
-        this.showError('ozhidalaos )');
+        this.showError('ozhidalas\' )');
       }
 
       this.getToken();
       return e;
     default:
-      this.showError("ozhidalos' pervichnoe virazhenie. @currToken = " + this.currToken);
+      this.showError("Virazhenie nekorrektno!");
       return 0.0;
   }
 };
 
 Calc.prototype.term = function(get) {
-
   var left = this.prim(get);
   while (true) {
     switch (this.currToken) {
@@ -211,7 +210,7 @@ var setup = function(sourceText, resultElement) {
   errorText = "";
   var source = prepareString(sourceText);
   console.log("source text: " + source);
-  var result = runCalc(source);  
+  var result = runCalc(source);
   console.log("result text: " + result);
   console.log("error text: " + errorText);
 
@@ -228,7 +227,6 @@ var setup = function(sourceText, resultElement) {
     resultElement.innerHTML = result;
   }
 };
-
 
 var sourceElement = document.getElementById('source');
 var buttonElement = document.getElementById('btn');
